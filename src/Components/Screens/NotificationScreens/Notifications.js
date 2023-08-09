@@ -11,7 +11,7 @@ const Notifications = () => {
                     display={'flex'}
                     justifyContent={'space-between'}
                     alignItems={'center'}
-
+                    padding={2}
                 >
                     <Box>
                         <Typography variant='h4'>
@@ -22,7 +22,6 @@ const Notifications = () => {
                         onClick={(e) => answerCall()}>
                         AnswerCall
                     </Button>
-
                 </Box>
             )}
         </>

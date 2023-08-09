@@ -13,6 +13,7 @@ const SocketProvider = ({ children }) => {
     const [call, setCall] = useState({});
     const [callAccepted, setCallAccepted] = useState(false);
     const [callEnded, setCallEnded] = useState(false);
+    const [iscalling, setIsCalling] = useState(false);
     const [name, setName] = useState("");
 
     const myVideo = useRef();
@@ -82,16 +83,23 @@ const SocketProvider = ({ children }) => {
             });
 
             peer.on('signal', (data) => {
-                console.log(`[+] STARTED SIGNALING BY ANSWERING CALL....`);
-                socket.emit('answer:Call', { signal: data, to: call.from });
+                try {
+                    console.log(`[+] STARTED SIGNALING BY ANSWERING CALL....`);
+                    socket.emit('answer:Call', { signal: data, to: call.from });
+                } catch (error) {
+                    console.log(`[-] signal Error line 90`, error);
+                }
             });
-
             /*
             This event is triggered when the remote peer's media stream becomes available and can be used for displaying the video and audio from the remote peer
             */
             peer.on('stream', (currentStream) => {
-                userVideo.current.srcObject = currentStream;
-                setRemoteStream(currentStream);
+                try {
+                    userVideo.current.srcObject = currentStream;
+                    setRemoteStream(currentStream);
+                } catch (error) {
+                    console.log(`[-] stream Error line 90`, error);
+                }
             });
             /* 
             the peer.signal method handles the incoming signaling data from the other peer and uses it to complete the WebRTC connection setup. This involves exchanging ICE candidates, session descriptions, and other negotiation information that is crucial for establishing a direct peer-to-peer audio/video/data channel between the two peers.
@@ -111,15 +119,24 @@ const SocketProvider = ({ children }) => {
 
             /* When a new Peer instance is created, it automatically generates a signal event as part of the WebRTC process. This event is crucial for the peers to exchange the necessary signaling data, including ICE candidates and session description, to establish a direct peer-to-peer connection. */
             const peer = new Peer({ initiator: true, trickle: false, stream: stream });
-
+            setIsCalling(true);
             peer.on('signal', (data) => {
-                console.log(`[+] STARTING SIGNALING BY SENDING A CALL....`);
-                socket.emit('call:User', { userToCall: id, signalData: data, from: me, name: name });
+                try {
+                    console.log(`[+] STARTING SIGNALING BY SENDING A CALL....`);
+                    socket.emit('call:User', { userToCall: id, signalData: data, from: me, name: name });
+                } catch (error) {
+                    console.log(`[-]signal error line 128`, error);
+                }
             });
 
             peer.on('stream', (currentStream) => {
-                userVideo.current.srcObject = currentStream;
-                setRemoteStream(currentStream)
+                try {
+                    userVideo.current.srcObject = currentStream;
+                    setRemoteStream(currentStream);
+                    setIsCalling(false);
+                } catch (error) {
+                    console.log(`[-] stream Error line 134`, error);
+                }
             });
 
             socket.on('call:Accepted', (signal) => {
@@ -128,6 +145,7 @@ const SocketProvider = ({ children }) => {
             });
             connectionRef.current = peer;
         } catch (error) {
+            setIsCalling(false);
             console.log(`[-] callUser Error:`, error);
         }
     };
@@ -177,6 +195,8 @@ const SocketProvider = ({ children }) => {
             answerCall,
             leaveCall,
             callEnded,
+            iscalling,
+            setIsCalling
         }}> {children}</SocketContext.Provider>;
 };
 

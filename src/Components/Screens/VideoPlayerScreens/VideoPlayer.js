@@ -5,26 +5,32 @@ import { useSocketState } from '../../../Context/SocketProvider';
 const VideoPlayer = () => {
     const { myVideo, userVideo, stream, callAccepted, callEnded, name } = useSocketState();
     useEffect(() => {
-        console.log(`[+] Video player mounter`);
+        console.log(`[+] Video player mounted`);
     }, []);
+
     return (
-        <Grid sx={{ justifyContent: 'center' }}>
+        <Grid container justifyContent="center" spacing={2}>
             {/* YOUR VIDEO */}
-            {stream && <Paper sx={{ padding: '10px', border: '2px solid black', margin: '10px' }}>
+            {stream && (
                 <Grid item xs={12} md={6}>
-                    <Typography variant='h5' gutterBottom>My Video : {name}</Typography>
-                    <video playsInline muted ref={myVideo} autoPlay style={{ width: '550px' }} />
+                    <Paper sx={{ padding: '10px', border: '2px solid black' }}>
+                        <Typography variant="h5" gutterBottom>
+                            My Video: {name}
+                        </Typography>
+                        <video playsInline muted ref={myVideo} autoPlay style={{ width: '100%' }} />
+                    </Paper>
                 </Grid>
-            </Paper>
-            }
+            )}
             {/* REMOTE VIDEO */}
             {callAccepted && !callEnded && (
-                <Paper sx={{ padding: '10px', border: '2px solid black', margin: '10px' }}>
-                    <Grid item xs={12} md={6}>
-                        <Typography variant='h5' gutterBottom>Remote Video</Typography>
-                        <video playsInline muted ref={userVideo} autoPlay style={{ width: '550px' }} />
-                    </Grid>
-                </Paper>
+                <Grid item xs={12} md={6}>
+                    <Paper sx={{ padding: '10px', border: '2px solid black' }}>
+                        <Typography variant="h5" gutterBottom>
+                            Remote Video
+                        </Typography>
+                        <video playsInline muted ref={userVideo} autoPlay style={{ width: '100%' }} />
+                    </Paper>
+                </Grid>
             )}
         </Grid>
     );

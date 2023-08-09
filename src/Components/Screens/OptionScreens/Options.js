@@ -6,7 +6,7 @@ import { useSocketState } from '../../../Context/SocketProvider';
 
 
 const Options = ({ children }) => {
-    const { me, callAccepted, callEnded, name, setName, leaveCall, callUser } = useSocketState();
+    const { me, callAccepted, callEnded, name, setName, leaveCall, callUser, iscalling } = useSocketState();
     const [idToCall, setIdToCall] = useState('');
     const [notifications, setNotifications] = useState('');
     const handleCall = (e) => {
@@ -22,7 +22,7 @@ const Options = ({ children }) => {
     };
 
     return (
-        <Container>
+        <Container sx={{ margin: '5px 0px 0px 0px' }}>
             <Paper elevation={10}>
                 <Box
                     display={'flex'}
@@ -69,6 +69,7 @@ const Options = ({ children }) => {
                             </Button>
                         ) : (
                             <Button
+                                disabled={iscalling}
                                 sx={{
 
                                     backgroundColor: '#81c784', // Change to your desired color
@@ -105,7 +106,10 @@ const Options = ({ children }) => {
                             <Button>X</Button>
                         </Box>
                     </Box>}
+
+                {iscalling && <Typography variant='h5' sx={{ margin: '5px 1px 5px 1px' }}> Calling {idToCall}.....</Typography>}
             </Paper>
+
         </Container>
     );
 };
