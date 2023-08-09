@@ -8,6 +8,7 @@ const socket = io.connect('http://localhost:8000');
 
 const SocketProvider = ({ children }) => {
     const [stream, setStream] = useState(null);
+    const [remoteStream, setRemoteStream] = useState(null);
     const [me, setMe] = useState();
     const [call, setCall] = useState({});
     const [callAccepted, setCallAccepted] = useState(false);
@@ -18,13 +19,13 @@ const SocketProvider = ({ children }) => {
     const userVideo = useRef();
     const connectionRef = useRef();
     console.log(`[+] Get Derived SocketProvider .......`);
-    console.log({ stream, me });
+    console.log({ stream, me, call, remoteStream });
     console.log(`[+] ..................................`);
+
     // socket config
     useEffect(() => {
         getMediaStream();
-
-
+        console.log(`[+] provider mounted`);
         const onMeListener = (id) => {
             try {
                 setMe(id);
@@ -41,31 +42,44 @@ const SocketProvider = ({ children }) => {
             }
         };
 
+        const onLeaveCallListener = () => {
+            leaveCall();
+        };
+
 
         const onConnect = () => {
             console.log(`[+] User connectd ${socket.id}`);
         };
 
+
+
         const onDisconnect = () => {
             console.log(`[+] User disconnected `);
+            window.location.reload();
         };
 
         socket.on('connect', onConnect);
         socket.on('me', onMeListener);
         socket.on('call:User', onCallUserListener);
+        socket.on('callEnded', onLeaveCallListener);
         socket.on('disconnect', onDisconnect);
         return () => {
             socket.off('connect', onConnect);
             socket.off('me', onMeListener);
             socket.off('disconnect', onDisconnect);
+            socket.on('callEnded', onLeaveCallListener);
         };
     }, []);
 
 
-    const onAnswerCall = () => {
+    const answerCall = () => {
         try {
+            console.log(`[+] Answering cALL..`);
             setCallAccepted(true);
-            const peer = new Peer({ initiator: false, trickle: false, stream: stream });
+            const peer = new Peer({
+                initiator: false,
+                trickle: false, stream: stream
+            });
 
             peer.on('signal', (data) => {
                 console.log(`[+] STARTED SIGNALING BY ANSWERING CALL....`);
@@ -77,6 +91,7 @@ const SocketProvider = ({ children }) => {
             */
             peer.on('stream', (currentStream) => {
                 userVideo.current.srcObject = currentStream;
+                setRemoteStream(currentStream);
             });
             /* 
             the peer.signal method handles the incoming signaling data from the other peer and uses it to complete the WebRTC connection setup. This involves exchanging ICE candidates, session descriptions, and other negotiation information that is crucial for establishing a direct peer-to-peer audio/video/data channel between the two peers.
@@ -86,7 +101,7 @@ const SocketProvider = ({ children }) => {
             connectionRef.current = peer;
 
         } catch (error) {
-            console.log(`[-] onAnswerCall Error:`, error);
+            console.log(`[-] answerCall Error:`, error);
         }
     };
 
@@ -104,6 +119,7 @@ const SocketProvider = ({ children }) => {
 
             peer.on('stream', (currentStream) => {
                 userVideo.current.srcObject = currentStream;
+                setRemoteStream(currentStream)
             });
 
             socket.on('call:Accepted', (signal) => {
@@ -116,18 +132,52 @@ const SocketProvider = ({ children }) => {
         }
     };
 
-    /* GET THE MEDIA STREAM AND POPULATE THE USER VIDEO*/
-    const getMediaStream = async () => {
+    const leaveCall = () => {
         try {
-            const userstream = navigator.mediaDevices.getUserMedia({ video: true, audio: false });
-            setStream(userstream);
-            myVideo.current.srcObject = userstream;
+            setCallEnded(true);
+            connectionRef.current.destroy();
+            window.location.reload();
         } catch (error) {
-            console.log(`[-] getMediaStream Error`, error);
+            console.log(`[-] leaveCall Error`, error);
+            window.location.reload();
         }
     };
 
-    return <SocketContext.Provider value={{ socket }}> {children}</SocketContext.Provider>;
+    /* GET THE MEDIA STREAM AND POPULATE THE USER VIDEO*/
+    const getMediaStream = async () => {
+        try {
+            const userstream = await navigator.mediaDevices.getUserMedia({ video: true, audio: false });
+            setStream(userstream);
+        } catch (error) {
+            console.error(`[-] getMediaStream Error`, error);
+        }
+    };
+
+    useEffect(() => {
+        try {
+            if (myVideo.current)
+                myVideo.current.srcObject = stream;
+        } catch (error) {
+            console.error(`[-]Error`, error);
+        }
+    }, [stream]);
+
+    return <SocketContext.Provider value={
+        {
+            call,
+            callAccepted,
+            myVideo,
+            userVideo,
+            stream,
+            name,
+            setName,
+            me,
+            socket,
+            callUser,
+            answerCall,
+            leaveCall,
+            callEnded,
+        }}> {children}</SocketContext.Provider>;
 };
 
 const useSocketState = () => {
