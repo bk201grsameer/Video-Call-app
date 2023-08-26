@@ -1,70 +1,81 @@
-# Getting Started with Create React App
+# Video Chat App with Peer.js
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+Welcome to the MERN Video Chat App with Peer.js! This application allows users to engage in seamless video calls using the power of the MERN stack (MongoDB, Express, React, Node.js) and the Peer.js library. Stay connected with friends, family, and colleagues through high-quality video communication. This README provides an overview of the app's features, installation steps, and screenshots.
 
-## Available Scripts
+## Features
 
-In the project directory, you can run:
+- **Real-time Video Calls**: Enjoy high-quality, real-time video calls with your contacts.
+  
+- **User Authentication**: Sign up and log in securely to your account using email and password.
+  
+- **Contact Management**: Easily manage your contacts and see their online/offline status.
+  
+- **Responsive Design**: The app is designed to work seamlessly across different devices and screen sizes.
 
-### `npm start`
+## Screenshots
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+![Incoming Call](callcoming.png)
+*Fig. 1: Contact Management - Manage your contacts and their status.*
 
-### `npm test`
+![Video Call](videocall.png)
+*Fig. 2: Video Call - Engage in real-time video conversations.*
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
 
-### `npm run build`
+## Installation
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+1. **Clone the Repository**:
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+   ```bash
+   git clone https://github.com/bk201grsameer/Video-Call-app.git
+   cd Video-Call-app-app
+   ```
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+2. **Install Dependencies**:
 
-### `npm run eject`
+   ```bash
+   cd client
+   npm install
+   cd ../server
+   npm install
+   ```
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+3. **Set Environment Variables**:
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+   Rename `.env.example` to `.env` in both the `client` and `server` directories. Add your configuration values, such as MongoDB connection URI and JWT secret.
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+4. **Run the App**:
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+   In one terminal, start the client:
+   
+   ```bash
+   cd client
+   npm start
+   ```
 
-## Learn More
+   In another terminal, start the server:
+   
+   ```bash
+   cd server
+   npm start
+   ```
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+5. **Access the App**:
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+   Open your web browser and visit `http://localhost:3000` to use the app.
 
-### Code Splitting
+## Support and Issues
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+If you encounter any issues or have questions, please [open an issue](https://github.com/your-username/mern-video-chat-app/issues) on GitHub.
 
-### Analyzing the Bundle Size
+## Contributing
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
+Contributions are welcome! If you'd like to contribute to the project, please follow the guidelines in the [CONTRIBUTING.md](/CONTRIBUTING.md) file.
 
-### Making a Progressive Web App
+## License
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
+This project is licensed under the [MIT License](/LICENSE).
 
-### Advanced Configuration
+---
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+Note: This README is a template and should be customized to match the specifics of your video chat app, including project structure, design, and screenshots. Make sure to replace the placeholders like `/screenshots/home.png` with actual paths to your screenshot images.
