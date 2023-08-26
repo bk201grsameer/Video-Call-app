@@ -6,11 +6,7 @@ Welcome to the MERN Video Chat App with Peer.js! This application allows users t
 
 - **Real-time Video Calls**: Enjoy high-quality, real-time video calls with your contacts.
   
-- **User Authentication**: Sign up and log in securely to your account using email and password.
-  
-- **Contact Management**: Easily manage your contacts and see their online/offline status.
-  
-- **Responsive Design**: The app is designed to work seamlessly across different devices and screen sizes.
+
 
 ## Screenshots
 
@@ -72,10 +68,10 @@ If you encounter any issues or have questions, please [open an issue](https://gi
 
 Contributions are welcome! If you'd like to contribute to the project, please follow the guidelines in the [CONTRIBUTING.md](/CONTRIBUTING.md) file.
 
+## Reference Links
+https://github.com/adrianhajdin/project_video_chat
+
 ## License
 
 This project is licensed under the [MIT License](/LICENSE).
-
 ---
-
-Note: This README is a template and should be customized to match the specifics of your video chat app, including project structure, design, and screenshots. Make sure to replace the placeholders like `/screenshots/home.png` with actual paths to your screenshot images.
